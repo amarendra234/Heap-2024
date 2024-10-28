@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> getOrder(vector<vector<int>>& tasks) {
+        vector<pair<int,pair<int,int>>>Sorted_arr;
+        for(int i=0;i<tasks.size();i++){
+            Sorted_arr.push_back({tasks[i][0],{tasks[i][1],i}});
+        }
+        sort(Sorted_arr.begin(),Sorted_arr.end());
+        int i=0;
+        int n=tasks.size();
+        long long int curr_time=0;
+        vector<int>ans;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+       // pq.push({Sorted_arr[0].second.first,Sorted_arr[0].second.second});
+        while(i<n or !pq.empty()){
+              if(pq.empty() and curr_time<=Sorted_arr[i].first){
+                curr_time=Sorted_arr[i].first;
+               
+              }
+              while(i<n and curr_time>=Sorted_arr[i].first){
+                pq.push({Sorted_arr[i].second.first,Sorted_arr[i].second.second});
+                i++;
+              }
+              ans.push_back(pq.top().second);
+              curr_time+=pq.top().first;
+              pq.pop();
+        }
+        return ans;
+    }
+};
