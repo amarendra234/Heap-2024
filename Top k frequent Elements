@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int,int>umap;
+        for(auto arr:nums){
+            umap[arr]++;
+        }
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+        // push fre->ele
+        for(auto nbr:umap){
+            if(pq.size()<k){
+                pq.push({nbr.second,nbr.first});
+            }else{
+                if(nbr.second>pq.top().first){
+                    pq.pop();
+                    pq.push({nbr.second,nbr.first});
+                }
+            }
+        }
+        vector<int>ans;
+        while(pq.size()>0){
+            ans.push_back(pq.top().second);
+            pq.pop();
+        }
+        return ans;
+    }
+};
