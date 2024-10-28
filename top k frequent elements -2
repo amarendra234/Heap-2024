@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        // using buket sort
+        unordered_map<int,int>umap;
+        for(auto nbr:nums){
+            umap[nbr]++;
+        }
+        vector<vector<int>>bucket(nums.size()+1);
+        for(auto nbr:umap){
+            bucket[nbr.second].push_back(nbr.first);
+        }
+        vector<int>ans;
+        for(int i=nums.size();i>=0;i--){
+            if(bucket[i].size()==0){
+                continue;
+            }
+            for(int j=0;j<bucket[i].size();j++){
+                ans.push_back(bucket[i][j]);
+                if(ans.size()==k){
+                    return ans;
+                }
+            }
+        }
+        return ans;
+    }
+};
