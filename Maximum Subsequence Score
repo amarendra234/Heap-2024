@@ -1,0 +1,38 @@
+class Solution {
+public:
+bool static customComparator(const pair<int, int>& a, const pair<int, int>& b) {
+   
+    if (a.second != b.second) {
+        return a.second > b.second;
+    }
+    return a.first > b.first;
+}
+    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+        vector<pair<int,int>>v;
+        for(int i=0;i<nums1.size();i++){
+            v.push_back({nums1[i],nums2[i]});
+        }
+        sort(v.begin(),v.end(),customComparator);
+        priority_queue<int,vector<int>,greater<int>>pq;
+        long long int sum=0,ans=0;
+        for(int i=0;i<k-1;i++){
+            sum+=v[i].first;
+            pq.push(v[i].first);
+        }
+        for(int i=k-1;i<nums1.size();i++){
+           long long int val=v[i].second;
+            // find top k element;
+             if(pq.size()<k){
+                pq.push(v[i].first);
+                 sum+=v[i].first;
+             }else if(v[i].first>pq.top()){
+                sum-=pq.top();
+                pq.pop();
+                pq.push(v[i].first);
+                sum+=v[i].first;
+             }
+             ans=max(ans,val*sum);
+        }
+        return ans;
+    }
+};
