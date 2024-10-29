@@ -1,0 +1,39 @@
+class Solution {
+public:
+    long long totalCost(vector<int>& costs, int k, int candidates) {
+        long long int ans=0;
+        int i=0,j=costs.size()-1;
+        priority_queue<int,vector<int>,greater<int>>pq1;
+        priority_queue<int,vector<int>,greater<int>>pq2;
+        while(k>0){
+            while(pq1.size()<candidates and i<=j){
+                pq1.push(costs[i]);
+                i++;
+            }
+            while(pq2.size()<candidates and i<=j){
+                pq2.push(costs[j]);
+                j--;
+            }
+            int val1=INT_MAX;
+            int val2=INT_MAX;
+            if(!pq1.empty()){
+                val1=min(val1,pq1.top());
+            }
+            if(!pq2.empty()){
+                val2=min(val2,pq2.top());
+            }
+            if(val1<=val2){
+                ans+=val1;
+                pq1.pop();
+                k--;
+            }else{
+                ans+=val2;
+                pq2.pop();
+                k--;
+            }
+
+        }
+
+        return ans;
+    }
+};
