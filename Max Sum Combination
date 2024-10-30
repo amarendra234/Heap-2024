@@ -1,0 +1,28 @@
+vector<int> Solution::solve(vector<int> &A, vector<int> &B, int C) {
+    priority_queue<pair<int,pair<int,int>>>pq;
+    vector<int>ans;
+    sort(A.begin(),A.end());
+    sort(B.begin(),B.end());
+    int len1=A.size()-1;
+    int len2=B.size()-1;
+    pq.push({A[len1]+B[len2],{len1,len2}});
+    set<pair<int,int>>st;
+    st.insert({len1,len2});
+    while(!pq.empty() and C>0){
+        int sum=pq.top().first;
+        int i=pq.top().second.first;
+        int j=pq.top().second.second;
+        ans.push_back(sum);
+        pq.pop();
+        C--;
+        if(i-1>=0 and st.find({i-1,j})==st.end()){
+            pq.push({A[i-1]+B[j],{i-1,j}});
+            st.insert({i-1,j});
+        }
+        if(j-1>=0 and st.find({i,j-1})==st.end()){
+            pq.push({A[i]+B[j-1],{i,j-1}});
+            st.insert({i,j-1});
+        }
+    }
+    return ans;
+}
