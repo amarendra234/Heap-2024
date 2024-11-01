@@ -1,0 +1,40 @@
+class Solution {
+public:
+    string reorganizeString(string s) {
+        priority_queue<pair<int,char>>pq;
+        string ans="";
+        unordered_map<char,int>umap;
+        for(auto nbr:s){
+            umap[nbr]++;
+        }
+        for(auto nbr:umap){
+            pq.push({nbr.second,nbr.first});
+        }
+        while(pq.size()>0){
+            int fre=pq.top().first;
+            char ch=pq.top().second;
+            pq.pop();
+            if(ans.length()==0 or ans.back()!=ch){
+                ans+=ch;
+                fre--;
+            }else{
+                if(pq.empty()){
+                    return "";
+                }
+                int next_char=pq.top().second;
+                int next_fre=pq.top().first;
+                pq.pop();
+                ans+=next_char;
+                next_fre--;
+                if(next_fre!=0){
+                    pq.push({next_fre,next_char});
+                }
+            }
+            
+            if(fre!=0){
+                pq.push({fre,ch});
+            }
+        }
+         return ans;
+    }
+};
