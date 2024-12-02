@@ -1,0 +1,50 @@
+class Solution {
+    public int no_of_node(Node tree){
+        if(tree==null){
+            return 0;
+        }
+        return 1+no_of_node(tree.left)+no_of_node(tree.right);
+    }
+    boolean completeness_tree(Node tree,int curr_node,int total_node){
+        if(tree==null){
+            return true;
+        }
+        if(curr_node>total_node){
+            return false;
+        }
+        boolean leftside=completeness_tree(tree.left,curr_node*2,total_node);
+        boolean rightside=completeness_tree(tree.right,curr_node*2+1,total_node);
+        return leftside && rightside;
+    }
+    boolean check_heap_property(Node tree){
+        if(tree==null){
+            return true;
+        }
+        
+        boolean leftside=check_heap_property(tree.left);
+        boolean rightside=check_heap_property(tree.right);
+        boolean ans=false;
+        if(tree.left!=null && tree.right!=null){
+            ans= tree.data>tree.left.data && tree.data>tree.right.data;
+        }else if(tree.left==null && tree.right==null){
+            ans= true;
+        }else if(tree.left!=null && tree.right==null){
+            ans= tree.data>tree.left.data;
+        }else if(tree.left==null && tree.right!=null){
+            ans= tree.data>tree.right.data;
+        }
+        //return ans;
+       return ans && leftside && rightside;
+    }
+    boolean isHeap(Node tree) {
+        // code here
+        int count_node=no_of_node(tree);
+       // System.out.println(count_node);
+        boolean completeness= completeness_tree(tree,1,count_node);
+        if(!completeness){
+            return false;
+        }
+        boolean heap_property=check_heap_property(tree);
+        return completeness && heap_property;
+    }
+}
